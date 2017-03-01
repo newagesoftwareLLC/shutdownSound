@@ -16,7 +16,8 @@ namespace shutdownSound
         [DllImport("winmm.dll")]
         private static extern uint mciSendString(string command, StringBuilder returnValue, int returnLength, IntPtr winHandle);
 
-        int dur = 0;
+        int dur1 = 0;
+        int dur2 = 0;
 
         public Form1()
         {
@@ -25,8 +26,16 @@ namespace shutdownSound
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBox1.Text = Properties.Settings.Default.wavFile;
-            dur = GetSoundLength(textBox1.Text);
+            textBox1.Text = Properties.Settings.Default.exitFile;
+            dur1 = GetSoundLength(textBox1.Text);
+            textBox2.Text = Properties.Settings.Default.startFile;
+            dur2 = GetSoundLength(textBox2.Text);
+
+            if (textBox2.Text != "")
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(textBox2.Text);
+                player.Play();
+            }
         }
 
         public static int GetSoundLength(string fileName)
@@ -49,12 +58,13 @@ namespace shutdownSound
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(textBox1.Text);
                 player.Play();
-                System.Threading.Thread.Sleep(dur);
+                System.Threading.Thread.Sleep(dur1);
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            openFileDialog1.Title = "Shutdown Audio File";
             openFileDialog1.Filter = "WAV files (*.wav) | *.wav";
             openFileDialog1.FileName = "";
             openFileDialog1.ShowDialog();
@@ -63,9 +73,9 @@ namespace shutdownSound
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             textBox1.Text = openFileDialog1.FileName;
-            Properties.Settings.Default.wavFile = textBox1.Text;
+            Properties.Settings.Default.exitFile = textBox1.Text;
             if (textBox1.Text != "")
-                dur = GetSoundLength(textBox1.Text);
+                dur1 = GetSoundLength(textBox1.Text);
             Properties.Settings.Default.Save();
         }
 
@@ -90,6 +100,23 @@ namespace shutdownSound
         {
             //if (textBox1.Text != "")
                 this.Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            openFileDialog2.Title = "Startup Audio File";
+            openFileDialog2.Filter = "WAV files (*.wav) | *.wav";
+            openFileDialog2.FileName = "";
+            openFileDialog2.ShowDialog();
+        }
+
+        private void openFileDialog2_FileOk(object sender, CancelEventArgs e)
+        {
+            textBox2.Text = openFileDialog2.FileName;
+            Properties.Settings.Default.startFile = textBox2.Text;
+            if (textBox1.Text != "")
+                dur2 = GetSoundLength(textBox2.Text);
+            Properties.Settings.Default.Save();
         }
     }
 }
