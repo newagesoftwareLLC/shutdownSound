@@ -1,5 +1,5 @@
 # shutdownSound
-For Windows 8 & 10. Let's the system make a shutdown sound.
+For Windows 8 & 10. Let's the system make a startup and shutdown sound.
 
 It calculates the .wav file's audio length, plays the audio file, then pauses for audio length so it can fully play that file.
 
