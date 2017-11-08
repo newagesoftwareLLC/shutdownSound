@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -26,6 +27,12 @@ namespace shutdownSound
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            foreach (Process p in Process.GetProcesses())
+            {
+                if (p.ProcessName == "Shutdown_Sound" && p.Id != Process.GetCurrentProcess().Id)
+                    p.Kill();
+            }
+
             textBox1.Text = Properties.Settings.Default.exitFile;
             dur1 = GetSoundLength(textBox1.Text);
             textBox2.Text = Properties.Settings.Default.startFile;
@@ -91,15 +98,13 @@ namespace shutdownSound
             WindowState = FormWindowState.Normal;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Place this program in your" + Environment.NewLine + "\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\"" + Environment.NewLine + "folder.");
-        }
-
         private void Form1_Shown(object sender, EventArgs e)
         {
-            //if (textBox1.Text != "")
-                this.Hide();
+            if (Properties.Settings.Default.notifyIcon)
+                notifyIcon1.Visible = false;
+            else
+                notifyIcon1.Visible = true;
+            this.Hide();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -116,6 +121,20 @@ namespace shutdownSound
             Properties.Settings.Default.startFile = textBox2.Text;
             if (textBox1.Text != "")
                 dur2 = GetSoundLength(textBox2.Text);
+            Properties.Settings.Default.Save();
+        }
+
+        private void hideTrayIcon_CheckedChanged(object sender, EventArgs e)
+        {
+            if (hideTrayIcon.Checked)
+            {
+                Properties.Settings.Default.notifyIcon = true;
+                notifyIcon1.Visible = false;
+            } else
+            {
+                Properties.Settings.Default.notifyIcon = false;
+                notifyIcon1.Visible = true;
+            }
             Properties.Settings.Default.Save();
         }
     }
