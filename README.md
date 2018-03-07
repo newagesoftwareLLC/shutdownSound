@@ -3,7 +3,7 @@ For Windows 8 & 10. Let's the system make a startup and shutdown sound.
 
 It calculates the .wav file's audio length, plays the audio file, then pauses for audio length so it can fully play that file.
 
-#How to use
+# How to use
 Open the Control Panel go to Administrative Tools and Task Scheduler (or just search for Task Scheduler with Cortana)
 
 On the far right panel click on "Create Basic Task...". Type in something for the name and press the "Next >" button.
