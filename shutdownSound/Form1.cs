@@ -38,7 +38,7 @@ namespace shutdownSound
             textBox2.Text = Properties.Settings.Default.startFile;
             dur2 = GetSoundLength(textBox2.Text);
 
-            if (textBox2.Text != "")
+            if (textBox2.Text.ToLower().Contains(".wav"))
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(textBox2.Text);
                 player.Play();
@@ -61,7 +61,7 @@ namespace shutdownSound
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (textBox1.Text != "")
+            if (textBox1.Text.ToLower().Contains(".wav"))
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(textBox1.Text);
                 player.Play();
@@ -81,7 +81,7 @@ namespace shutdownSound
         {
             textBox1.Text = openFileDialog1.FileName;
             Properties.Settings.Default.exitFile = textBox1.Text;
-            if (textBox1.Text != "")
+            if (textBox1.Text.ToLower().Contains(".wav"))
                 dur1 = GetSoundLength(textBox1.Text);
             Properties.Settings.Default.Save();
         }
